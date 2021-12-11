@@ -31,7 +31,9 @@ def visualize() -> None:
     pygame.display.set_caption('Twitter Misinformation Visualizer')
     font = pygame.font.SysFont('Arial', 28)
     month_year_list = generate_month_year_list()
-    current_size = 300
+    current_size = 0
+    current_misinformation = 0.0
+    target_size = current_size
 
     while in_play:
         for event in pygame.event.get():  # Check for any events
@@ -40,8 +42,11 @@ def visualize() -> None:
 
         screen = pygame.display.set_mode((width, height))
 
-        current_size = draw_game(screen, width, height, button_rows, font, month_year_list, data,
-                                 current_size)
+        current_size, target_size, current_misinformation = draw_game(screen, width, height,
+                                                                      button_rows, font,
+                                                                      month_year_list, data,
+                                                                      current_size, target_size,
+                                                                      current_misinformation)
 
         pygame.display.update()
 
@@ -52,7 +57,7 @@ def visualize() -> None:
 
 def draw_game(screen: pygame.display, width: int, height: int, button_rows: list[ButtonRow],
               font: pygame.font, month_year_list: list[MonthYear], data: list[float],
-              current_size: int) -> int:
+              current_size: int, target_size: int, current_misinformation: float) -> tuple[int, int, float]:
     """Draws the pygame screen so that we can visualize the data.
 
     Returns the current size of the square"""
@@ -64,10 +69,13 @@ def draw_game(screen: pygame.display, width: int, height: int, button_rows: list
                                square_size, square_size))
 
     # variable size, changes on which month you press
-    variable_rect = pygame.Rect((0, 0, current_size, current_size))
+    full_rect = pygame.Rect((100, 0, 600, 100))
+    variable_rect = pygame.Rect((100, 0, current_size, 100))
 
-    variable_rect.center = center_rect.center
+    variable_rect.centery = center_rect.centery
+    full_rect.centery = center_rect.centery
 
+    pygame.draw.rect(screen, (155, 155, 155), full_rect)
     pygame.draw.rect(screen, (255, 0, 0), variable_rect)
 
     cur_c = 0
@@ -79,11 +87,17 @@ def draw_game(screen: pygame.display, width: int, height: int, button_rows: list
             for j in range(3):
                 button_rows[j].update_all_colours((255, 0, 0))
             button_rows[i].update_colour(button_clicked, (0, 255, 0))
-            current_size = round(1000 * data[button_clicked])
-            current_misinformation = str(data[button_clicked])
+            target_size = round(1000 * data[button_clicked])
+            current_misinformation = data[button_clicked]
 
-            screen.blit(font.render('Misinformation Found: ' + str(current_misinformation),
-                                    True, (0, 0, 0)), (50, 300))
+        if target_size - current_size < 0:
+            current_size -= 1
+        if target_size - current_size > 0:
+            current_size += 1
+
         cur_c += len(button_rows[i])
 
-    return current_size
+    screen.blit(font.render('Misinformation Found: ' + str(round(current_misinformation * 100, 1)) + '% of tweets',
+                            True, (0, 0, 0)), (10, 150))
+
+    return current_size, target_size, current_misinformation
