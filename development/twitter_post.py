@@ -6,65 +6,44 @@ import requests
 
 
 class ServerManager:
-    def __init__(self):
-        """
-        Initialization method for ServerManager
-        data:
-            bearer_token:string (The authentication token for the Twitter API)
-            headers:dict (A dictionary of headers for the HTTPS request)
-        return:
-            None
-        """
+    """
+    A class that deals with requesting the server
+
+    Instance Attributes:
+    - bearer_token: the API token key
+    - headers: the headers for the HTTPS request
+    - url: the URL to be queried
+    - response: the server response
+
+    Representation Invariants:
+    -
+    """
+    def __init__(self) -> None:
+        """Initializes the ServerManager class"""
         self.bearer_token = input('input your bearer token')  # get the bearer token
         self.headers = self._createHTTPSHeader(self.bearer_token)  # create headers
         self.url = None
         self.response = None
 
-    def buildServerRequest(self, param):
-        """
-        A method that builds the server request for the Twitter API
-        data:
-            url:string (The url that will be queried)
-            response:JSON (Returns the response in JSON format, to be parsed later)
-
-        """
+    def buildServerRequest(self, param: str) -> None:
+        """Builds the serve request for the Twitter API."""
         self.url = self._createURL(param)  # get the URL
         self.response = self._getResponse()  # get the response
 
-    def _createURL(self, param):
-        """
-        A method that geenrates the URL to be queried by formatting the parameters, and then returns it
-        data:
-            param:string (Search parameters)
-            url:string (URL to be queried)
-        return:
-            string
-        """
+    def _createURL(self, param: str) -> str:
+        """Returns the URL to be queried"""
         # generate the URL
         url = f'https://api.twitter.com/1.1/statuses/show/{param}.json'
         return url
 
-    def _createHTTPSHeader(self, bearer_token):
-        """
-        A method that create HTTPS headers for the request made above
-        data:
-            bearer_token:string
-            headers:dict
-        return:
-            dict
-        """
+    def _createHTTPSHeader(self, bearer_token: str) -> dict:
+        """Returns a dict of the HTTPS headers for the request made above"""
         # generate the HTTPS header
         headers = {"Authorization": "Bearer {}".format(bearer_token)}
         return headers
 
-    def _getResponse(self):
-        """
-        A method that queries the server and gets its response
-        data:
-            response:requests.request (The response request)
-        return:
-            JSON (the response in JSON format)
-        """
+    def _getResponse(self) -> str:
+        """Returns the server response in JSON format"""
         # create header
         response = requests.request("GET", self.url, headers=self.headers)
         # if the response has an error (anything that is not a code of 200 is an error)
@@ -75,47 +54,23 @@ class ServerManager:
 
 
 class ClientManager:
-    def __init__(self):
-        """
-        Empty upon initalization.
-        data:
-            None
-        return:
-            None
+    """A class that deals with getting the id we wish to search on
+        the api
+
+        Instance Attributes:
+        - param:
+    """
+    def __init__(self) -> None:
+        """Initialize the ClientManager class
         """
         self.param = ''
 
-    def getQuery(self, param):
+    def getQuery(self, param) -> None:
         """
-        A method to get the user's query as a parameter
-        data:
-            param:string (user input)
-        return:
-            None
+        Gets the user's query
         """
         self.param = int(param)
 
-    def callServer(self, other):
-        """
-        A simple method to build the server request. Does not return anything, just calls another object's method
-        data:
-            other:ServerManager
-        return:
-            None
-        """
+    def callServer(self, other: ServerManager) -> None:
+        """Builds the server request"""
         other.buildServerRequest(self.param)
-
-
-def main():
-    # create ServerManager, Interpreter, ClientManager objects
-    server = ServerManager()
-    user = ClientManager()
-
-    # call the getQuery() method
-    user.getQuery(1221957211913457664)
-    # build the server response
-    user.callServer(server)
-    # format and print hte server response
-    import pprint
-
-    pprint.pprint(server.response)
