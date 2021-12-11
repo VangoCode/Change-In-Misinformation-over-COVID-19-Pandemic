@@ -31,7 +31,7 @@ def visualize() -> None:
     pygame.display.set_caption('Twitter Misinformation Visualizer')
     font = pygame.font.SysFont('Arial', 28)
     month_year_list = generate_month_year_list()
-    current_size = 300
+    current_size = 0
     current_misinformation = 0.0
     target_size = current_size
 
@@ -69,10 +69,13 @@ def draw_game(screen: pygame.display, width: int, height: int, button_rows: list
                                square_size, square_size))
 
     # variable size, changes on which month you press
-    variable_rect = pygame.Rect((0, 0, current_size, current_size))
+    full_rect = pygame.Rect((100, 0, 600, 100))
+    variable_rect = pygame.Rect((100, 0, current_size, 100))
 
-    variable_rect.center = center_rect.center
+    variable_rect.centery = center_rect.centery
+    full_rect.centery = center_rect.centery
 
+    pygame.draw.rect(screen, (155, 155, 155), full_rect)
     pygame.draw.rect(screen, (255, 0, 0), variable_rect)
 
     cur_c = 0
