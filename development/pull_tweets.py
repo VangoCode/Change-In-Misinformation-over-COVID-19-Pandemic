@@ -35,65 +35,6 @@ def pull_direct_tweets() -> None:
 
     with open('./data/twitter_ids') as data:
         next(data)  # skip first line
-        for i in range(334 * 7):
-            next(data)
-
-        for i in range(242 * 50):
-            next(data)
-
-        for i in range(90 * 150):
-            next(data)
-
-        for i in range(628 * 1200):
-            next(data)
-
-        for i in range(637 * 1200):
-            next(data)
-
-        for i in range(650 * 1500):
-            next(data)
-
-        for i in range(661 * 1500):
-            next(data)
-
-        for i in range(235 * 2100):
-            next(data)
-
-        for i in range(402 * 4500):
-            next(data)
-
-        for i in range(700 * 12000):
-            next(data)
-
-        for i in range(713 * 25000):
-            next(data)
-
-        for i in range(712 * 30000):
-            next(data)
-
-        for i in range(711 * 30000):
-            next(data)
-
-        for i in range(704 * 30000):
-            next(data)
-
-        for i in range(725 * 30000):
-            next(data)
-
-        for i in range(724 * 30000):
-            next(data)
-
-        for i in range(770 * 30000):
-            next(data)
-
-        for i in range(377 * 30000):
-            next(data)
-
-        for i in range(413 * 30000):
-            next(data)
-
-        for i in range(364 * 30000):
-            next(data)
 
         for line in data:
             check_post_valid(line.strip(), f)
@@ -134,3 +75,28 @@ def sort_by_month() -> None:
 
     for file in files_open:
         file.close()
+
+
+if __name__ == '__main__':
+    # When you are ready to check your work with python_ta, uncomment the following lines.
+    # (Delete the "#" and space before each line.)
+    # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
+    # Leave this code uncommented when you submit your files.
+    #
+    import python_ta
+
+    python_ta.check_all(config={
+        'extra-imports': ['python_ta.contracts'],
+        'allowed-io': ['run_example_break'],
+        # HERE. All functions that use I/O must be stated here. For example, if do_this() has print in, then add 'do_this()' to allowed-io.
+        'max-line-length': 100,
+        'disable': ['R1705', 'C0200']
+    })
+
+    import python_ta.contracts
+
+    python_ta.contracts.check_all_contracts()
+
+    import doctest
+
+    doctest.testmod()

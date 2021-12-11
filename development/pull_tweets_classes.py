@@ -41,3 +41,28 @@ def generate_month_year_list() -> list[MonthYear]:
             MonthYear('Jul', '2021'),
             MonthYear('Aug', '2021'),
             MonthYear('Sep', '2021')]
+
+
+if __name__ == '__main__':
+    # When you are ready to check your work with python_ta, uncomment the following lines.
+    # (Delete the "#" and space before each line.)
+    # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
+    # Leave this code uncommented when you submit your files.
+    #
+    import python_ta
+
+    python_ta.check_all(config={
+        'extra-imports': ['python_ta.contracts'],
+        'allowed-io': ['run_example_break'],
+        # HERE. All functions that use I/O must be stated here. For example, if do_this() has print in, then add 'do_this()' to allowed-io.
+        'max-line-length': 100,
+        'disable': ['R1705', 'C0200']
+    })
+
+    import python_ta.contracts
+
+    python_ta.contracts.check_all_contracts()
+
+    import doctest
+
+    doctest.testmod()
