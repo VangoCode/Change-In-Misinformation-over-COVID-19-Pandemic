@@ -1,5 +1,6 @@
 """
-twitter_post.py
+Requesting the server and getting tweet IDs to search on the API with the classes
+ServerManager and ClientManager
 """
 
 import requests
@@ -14,10 +15,10 @@ class ServerManager:
     - headers: the headers for the HTTPS request
     - url: the URL to be queried
     - response: the server response
-
-    Representation Invariants:
-    -
     """
+    bearer_token: str
+    headers: dict
+
     def __init__(self) -> None:
         """Initializes the ServerManager class"""
         self.bearer_token = input('input your bearer token')  # get the bearer token
@@ -54,21 +55,18 @@ class ServerManager:
 
 
 class ClientManager:
-    """A class that deals with getting the id we wish to search on
-        the api
+    """A class that deals with getting the ID we wish to search on the API
 
-        Instance Attributes:
-        - param:
+    Instance Attributes:
+    - param: the ID of the tweet
     """
+
     def __init__(self) -> None:
-        """Initialize the ClientManager class
-        """
+        """Initialize the ClientManager class"""
         self.param = ''
 
-    def getQuery(self, param) -> None:
-        """
-        Gets the user's query
-        """
+    def getQuery(self, param: str) -> None:
+        """Gets the user's query"""
         self.param = int(param)
 
     def callServer(self, other: ServerManager) -> None:
