@@ -1,6 +1,8 @@
 myths - Copy
 references
 proposal
+development/data/large datasets
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -39,3 +41,5 @@ coverage.xml
 *.mo
 
 *.DS_STORE
+
+.twitter_keys.yaml

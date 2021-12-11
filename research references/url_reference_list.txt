@@ -1,0 +1,5 @@
+https://towardsdatascience.com/an-extensive-guide-to-collecting-tweets-from-twitter-api-v2-for-academic-research-using-python-3-518fcb71df2a
+
+https://www.openicpsr.org/openicpsr/project/120321/version/V11/view;jsessionid=EB090760F70409E47B82FC0137D7B1A1
+
+https://pypi.org/project/linereader/1.0.0/

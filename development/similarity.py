@@ -68,16 +68,10 @@ def is_false_positive(phrase: str) -> bool:
     with open('texts/negation_words.txt') as f:
         negation_words = f.read().splitlines()  # if you do f.readlines(), will be \n at the end
 
-    # TODO: make this more sophisticated (sometimes it catches true positives as false positives.
-    #   ex, when Nicki Minaj tweeted about the vaccine making testicles swell, her tweet says the
-    #   word won't, which is a negation so it triggers false positive
-    # TODO: split word into sentences, try to figure out an algorithm for when words are similar
-    #   i.e, swollen vs. swell vs. swelling ,etc.
-    # TODO: consider a thesaurus API
-    # TODO: token sort ratio for words which appear in sample (i.e check swell and swollen with
-    #   similar words function)
+    sentences = phrase.split('.')  # split the phrase into sentences
 
     for negation_word in negation_words:
-        if negation_word in phrase.lower():
-            return True
+        for sentence in sentences:
+            if negation_word in sentence.lower():
+                return True
     return False
