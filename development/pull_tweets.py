@@ -1,3 +1,20 @@
+"""
+Randomly pulls valid tweets using their IDs from the Twitter dataset and writes them into a file
+sorted by month using our twitter_post module, the CSV library, and the list of month-year
+combinations generated from pull_tweets_classes.py
+
+Copyright and Usage Information
+==================================================
+
+This file is provided solely for the personal and private use of students
+taking CSC110 at the University of Toronto St. George campus. All forms of
+distribution of this code, whether as given or with any changes, are
+expressly prohibited. For more information on copyright for CSC110 materials,
+please consult our Course Syllabus.
+
+This file is Copyright (c) 2021 Ron Varshavsky and Elsie (Muhan) Zhu.
+"""
+
 import twitter_post
 import csv
 from pull_tweets_classes import generate_month_year_list

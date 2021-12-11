@@ -1,3 +1,19 @@
+"""
+Visualizes the data of misinformation during the COVID-19 pandemic using the Pygame Library
+and Sys Library.
+
+Copyright and Usage Information
+==================================================
+
+This file is provided solely for the personal and private use of students
+taking CSC110 at the University of Toronto St. George campus. All forms of
+distribution of this code, whether as given or with any changes, are
+expressly prohibited. For more information on copyright for CSC110 materials,
+please consult our Course Syllabus.
+
+This file is Copyright (c) 2021 Ron Varshavsky and Elsie (Muhan) Zhu.
+"""
+
 import pygame
 import sys
 from pull_tweets_classes import generate_month_year_list, MonthYear
