@@ -21,11 +21,11 @@ def check_post_valid(id: str, f):
     user = twitter_post.ClientManager()
 
     # call the getQuery() method
-    user.getQuery(id)
+    user.get_query(id)
     # build the server response
-    user.callServer(server)
+    user.call_server(server)
 
-    if server.response is not False:
+    if server.response is not '':
         f.write(str(server.response) + '\n')
 
 
@@ -38,7 +38,7 @@ def pull_direct_tweets() -> None:
 
         for line in data:
             check_post_valid(line.strip(), f)
-            for i in range(30000):  # skip n lines
+            for _ in range(30000):  # skip n lines
                 next(data)
     f.close()
 
