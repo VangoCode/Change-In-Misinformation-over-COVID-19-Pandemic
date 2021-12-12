@@ -17,13 +17,15 @@ class NewsGuardScraperSpider(scrapy.Spider):
     def parse(self, response: scrapy.http.TextResponse, *args, **kwargs) -> None:
         """Extract the myths from the NewsGuard website, clean them, and write them to a file"""
         myths = response.xpath("//ol/li/strong/a/text()").extract()
-        file_name = 'extracted_myths2.txt'
+        file_name = 'extracted_myths.txt'
         print(myths)
         with open(file_name, 'w') as f:
             for myth in myths:
                 myth = myth.replace('\xa0', '')
                 myth = myth.replace('“', '')
                 myth = myth.replace('”', '')
+                myth = myth.replace('‘', '')
+                myth = myth.replace('’', '')
                 myth = myth.replace('MYTH:', '')
                 myth = myth.strip()
                 f.write(myth + '\n')
