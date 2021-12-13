@@ -1,7 +1,17 @@
-"""The main python file for COVID-19 misinformation over time"""
+"""The main Python file for COVID-19 Misinformation Over Time
+
+Copyright and Usage Information
+==================================================
+
+All forms of distribution of this code, whether as given or with any changes, are
+expressly prohibited.
+
+This file is Copyright (c) 2021 Ron Varshavsky and Elsie (Muhan) Zhu.
+"""
 import compute_similarity
 import visualize_data
 import pull_tweets
+
 
 if __name__ == '__main__':
     # sort data into months

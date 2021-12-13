@@ -2,14 +2,20 @@
 Web scraping that gets a collection of COVID-19 myths from
 https://www.newsguardtech.com/special-reports/coronavirus-misinformation-tracking-center/
 using the scrapy library.
+
+Copyright and Usage Information
+==================================================
+
+All forms of distribution of this code, whether as given or with any changes, are
+expressly prohibited.
+
+This file is Copyright (c) 2021 Ron Varshavsky and Elsie (Muhan) Zhu.
 """
 import scrapy
 
 
 class NewsGuardScraperSpider(scrapy.Spider):
-    """
-    A spider that scrapes the myths from the NewsGuard website
-    """
+    """A spider that scrapes the myths from the NewsGuard website"""
     name = 'newsguard'
 
     start_urls = ['https://www.newsguardtech.com/special-reports/coronavirus-misinformation-tracking-center/']
