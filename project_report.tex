@@ -1,0 +1,96 @@
+\documentclass[fontsize=11pt]{article}
+\usepackage{amsmath}
+\usepackage{hanging}
+\usepackage{setspace}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+
+\title{Misinformation Represented in Tweets Throughout the COVID-19 Pandemic}
+\author{Muhan (Elsie) Zhu, Ron Varshavsky}
+\date{Tuesday, December 14, 2021}
+
+\begin{document}
+    \maketitle
+
+    \section*{Problem Description and Research Question}
+
+    Throughout the COVID-19 Pandemic, there has been an influx of rumours and misinformation related to the virus and how different countries responded. The World Health Organization has dubbed this an ``Infodemic” alongside the current worldwide pandemic. This widespread misinformation has been catastrophic in many areas. A prime example is the “cure” for COVID-19 which circulated near the beginning of the pandemic. This ``cure” involved injecting bleach into your arms (van der Linden et al., 2020). Such rumours are not only false, but they are dangerous. In fact, this false fact was so widespread that the reported cases of accidental poisoning due to bleach in Americans doubled in March and April of 2020 (Bowden, 2020). The effects of a singular rumour were so detrimental that it compromised the lives of many people; such widespread misinformation is quite literally deadly. Such misinformation has changed over time, however it has never been fully eradicated from word of mouth, such as the rumour that taking a potentially dangerous dose of Ivermectin could reduce COVID-19 symptoms (U.S. Food and Drug Administration, 2021). This rumour, like the previous one mentioned, can put numerous lives at risk. We researched how public conversation surrounding the virus and misinformation have been impacted over time during the pandemic, and if these time frames coincided with any major milestones within the pandemic (i.e lockdown, vaccine distribution). We found evidence relating to the periods of time within the pandemic when influxes of misinformation took place. This allowed us to hypothesize the mistakes that we, as a society, made during the course of the pandemic which caused this spread of false, dangerous information. In order to quantify our research, we asked the question: \textbf{In what way, quantitatively, has misinformation in discourse on Twitter surrounding the COVID-19 pandemic changed over the course of the pandemic?}
+
+    \section*{Dataset Descriptions}
+
+    The source for our myths is the Newsguard Covid Myths website. Here, we simply scraped each myth from their site, and removed the characters ``MYTH: " from the beginning of each scraped line. The NewsGuard website can be found here: \href{https://www.newsguardtech.com/special-reports/coronavirus-misinformation-tracking-center/}{https://www.newsguardtech.com/special-reports/coronavirus-misinformation-tracking-center/}. \\
+    Another source we used for our myths was creating a separate file where we would input known misinformation that was skipped over in the NewsGuard website because they were removed as the site updated. We then combined both this source and the previous source into one file for a single dataset of ``COVID-19 myths", which we used to detect misinformation.\\
+    To find the tweets relating to COVID-19, we used the dataset ``COVID-19 Twitter Dataset with Latent Topics, Sentiments and Emotions Attributes". It can be found here: \href{https://www.openicpsr.org/openicpsr/project/120321/version/V11/view;jsessionid=EB090760F70409E47B82FC0137D7B1A1}{https://www.openicpsr.org/openicpsr/project/120321/\\version/V11/view;jsessionid=EB090760F70409E47B82FC0137D7B1A1}. This csv dataset contains 198 million Twitter tweet ID's, but does not contain the tweets themselves. Evidently, this would be very time consuming to compute on, so we took a smaller sample size by only using 1 in 30 000 lines of the dataset, resulting in about 6600 tweet id's to compute on. From here, we had to collect our own tweet dataset, as the dataset provided only contains tweet ID's, due to Twitter's API policy. As such, we used the Twitter API to get the text of each tweet by its ID. We then gathered each of these tweets into a separate file and used this as a dataset to compute on.\\
+    Finally, we compiled a list of common negation words from Grammarly into a text file, to use for the false-positive portion of our misinformation detection algorithm. The data we scraped can be found here:\\ \href{https://www.grammarly.com/blog/negatives/}{https://www.grammarly.com/blog/negatives/}.
+
+    \section*{Computational Overview}
+
+    First, we will need to filter the dataset to only contain verified false rumours. Since the dataset is only updated to April 31, 2020, we will also likely need to web-scrape more COVID-19 misinformation from other verified sources such as NewsGuard, or Snopes. To perform this web-scraping, we will use the scrapy library. With the web-scraped data, we will then clean up this data by removing unnecessary words accidentally picked up by the scraper. For example, NewsGuard has a list of COVID-19 myths, but each point begins with "MYTH:". Our cleaning algorithm would remove this first word. We will then append this cleaned up web-scraped data to the previous dataset. From there, we will use this filtered dataset by cross-referencing the articles with each verified false rumour using fuzzy string matching. Fuzzy string matching is a method of checking how close two strings are using Levenshtein distance. This type of string comparison is vital for this type of computation because the articles will typically not match exactly what the rumour string is, but will contain similar keywords. To perform this fuzzy string matching, we will use the ``Fuzzy Wuzzy" library available on PyPi, which contains a function titled ``Partial Token Sort", which returns a similarity score of two strings regardless of the order of the words. With this model of analysis, we will run this algorithm on top articles from each month of the pandemic since December 2019 to determine how many articles contain misinformation, as well as what kind of misinformation they contain. With the evidence gathered, we will then be able to see as well as visualize the change in the amount of misinformation detected in top articles over time as a graph. We plan to add an interactive element as well, perhaps to click on the graph and see a breakdown of what kinds of misinformation were most common for the month.
+
+
+    \section*{Instructions}
+
+    \begin{flushleft}
+
+        \textbf{Obtaining Datasets:}\\
+
+
+        \textbf{Running The Program:}
+
+
+    \end{flushleft}
+
+
+    \section*{Changes Between Proposal and Final Submission}
+    Between the proposal and the final submission, we made a few changes. First, we did not include the original dataset of myths we outlined in the proposal. This was because the dataset only contained myths for about three months worth of the pandemic, which made it largely irrelevant. Due to the immense number of computations performed by our algorithm to check for misinformation, we concluded that the few extra myths would not outweigh the extra time it would take to compute on the tweet data. \\
+    Another change we made was switching from searching for misinformation within news articles, to searching for misinformation within tweets on Twitter. We settled on this change because most news agencies perform intense fact checking for their articles, and if they do accidentally release misinformation, many will retract said articles making the entire project idea rather cumbersome, as there would be little misinformation found. On the other hand, we found that on Twitter, many people would simply post without fact checking, which allowed for widespread misinformation. Although Twitter does its due diligence to try to flag, and in some cases remove misinformation, they are bound to miss tweets, which was quite noticeable based on the results of our computations. We also came to the conclusion that discussions on Twitter have an immense impact on real world news, alongside the media. In fact, according to Pew Research, about 50\% of adults in the United States say they either sometimes, or often get their news from social media. As such, misinformation within social media plays a very big role in the world, and we decided it would be beneficial to research this.
+
+    \section*{Discussion}
+    The results from our computations show a very interesting trend: real world news impacted misinformation. More specifically, on the months where there was an increase of COVID-19 cases, such as April 2020, November 2020, and May 2021 misinformation also shot up. Similarly, on the months where the vaccines first became widely available, specifically January 2021, misinformation spiked as well. The same happened when lockdowns would occur, such as April 2020. This data definitely helps answer the research question. Our data explicitly shows how misinformation within tweets on Twitter changed throughout the pandemic, and during which months there were spikes in misinformation.
+
+    \section*{References}
+
+    \begin{doublespace}
+        \begin{hangparas}{0.25in}{1}
+            Bowden, J. (2020, May 12). Accidental poisonings from bleach and other disinfectants spiked amid coronavirus. TheHill. Retrieved November 4, 2021, from https://thehill.com/policy/healthcare/497312-accidental-poisonings-from-bleach-and-othr-disinfectants-spiked-amid.
+
+            Bryner, J. (2020, April 24). Disinfectant injections are a really bad idea. LiveScience. Retrieved November 4, 2021, from https://www.livescience.com/disinfectant-injections-coronavirus-dangerous.html.
+
+            NewsGuard. (2021, November 1). Coronavirus Misinformation Tracking Center. NewsGuard. Retrieved November 4, 2021, from https://www.newsguardtech.com/special-reports/coronavirus-misinformation-tracking-center/.
+
+            Office of the Commissioner. (2021, September 7). Why you should not use ivermectin to treat or prevent COVID-19. U.S. Food and Drug Administration. Retrieved November 4, 2021, from https://www.fda.gov/consumers/consumer-updates/why-you-should-not-use-ivermectin-treat-or-prevent-covid-19.
+
+            van der Linden, S., Roozenbeek, J., \& Compton, J. (2020). Inoculating against fake news about COVID-19. Frontiers in Psychology, 11. https://doi.org/10.3389/fpsyg.2020.566790
+
+            World Health Organization: WHO. (2021, April 21). Fighting misinformation in the time of covid-19, one click at a time. World Health Organization. Retrieved November 4, 2021, from https://www.who.int/news-room/feature-stories/detail/fighting-misinformation-in-the-time of-covid-19-one-click-at-a-time.
+
+        \end{hangparas}
+    \end{doublespace}
+
+% https://www.who.int/news-room/feature-stories/detail/fighting-misinformation-in-the-time-of-covid-19-one-click-at-a-time
+
+% https://www.frontiersin.org/articles/10.3389/fpsyg.2020.566790/full
+
+% https://www.livescience.com/disinfectant-injections-coronavirus-dangerous.html
+
+% https://thehill.com/policy/healthcare/497312-accidental-poisonings-from-bleach-and-other-disinfectants-spiked-amid
+
+% https://www.fda.gov/consumers/consumer-updates/why-you-should-not-use-ivermectin-treat-or-prevent-covid-19
+
+
+% Link to research article: \texttt{https://www.frontiersin.org/articles/10.3389/fpsyg.2021.644801/full}
+
+% Source: \texttt{https://github.com/MickeysClubhouse/COVID-19-rumor-dataset/blob/master/Data/news/news.csv}\\
+
+% Alternate Dataset: https://www.newsguardtech.com/special-reports/coronavirus-misinformation-tracking-center/
+
+
+% https://www.pewresearch.org/journalism/fact-sheet/news-platform-fact-sheet/pj_2021-11-08_news-platforms_0-03a/
+
+% NOTE: LaTeX does have a built-in way of generating references automatically,
+% but it's a bit tricky to use so we STRONGLY recommend writing your references
+% manually, using a standard academic format like APA or MLA.
+% (E.g., https://owl.purdue.edu/owl/research_and_citation/apa_style/apa_formatting_and_style_guide/general_format.html)
+
+\end{document}

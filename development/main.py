@@ -10,5 +10,3 @@ if __name__ == '__main__':
     compute_similarity.output_myths_count_into_file('outputted_myths.txt')
     # draw the visual representation of the data
     visualize_data.visualize()
-
-

@@ -42,7 +42,7 @@ def check_post_valid(id: str, f):
     # build the server response
     user.call_server(server)
 
-    if server.response is not '':
+    if server.response != '':
         f.write(str(server.response) + '\n')
 
 
@@ -76,7 +76,7 @@ def sort_by_month() -> None:
 
     files_open = []
     for item in month_year_list:
-        file = item.month + item.year
+        file = './data/' + item.month + item.year
         files_open.append(open(file, mode='w', encoding='utf-8'))
 
     with open('./data/filtered_twitter_ids_compiled', encoding='utf-8') as f:

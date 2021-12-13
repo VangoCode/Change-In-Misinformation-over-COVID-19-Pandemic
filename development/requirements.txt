@@ -9,10 +9,10 @@ scrapy
 # Dataclass
 dataclassess
 typing
+pyta
 
 # Data Processing
 fuzzywuzzy
 
 # Data Visualization
-plotly
 pygame
