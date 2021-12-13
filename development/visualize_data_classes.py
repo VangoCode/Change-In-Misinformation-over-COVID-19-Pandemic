@@ -59,7 +59,7 @@ class ButtonRow:
     y: int
     height: int
 
-    def __init__(self, y, height) -> None:
+    def __init__(self, y: int, height: int) -> None:
         """Initalize an empty row of buttons"""
         self._buttons = []
         self.num_of_buttons = 0
@@ -150,7 +150,7 @@ class ButtonRow:
                                     True, button.colour), (button.x + 5, button.y + 5))
             c += 1
 
-    def check_click(self, screen: pygame.display, cur_c: int) -> int:
+    def check_click(self, cur_c: int) -> int:
         """Returns the number of the button that was clicked. If no button was clicked return -1"""
         c = cur_c
         if pygame.mouse.get_pressed(3)[0]:
@@ -220,6 +220,18 @@ class ButtonRow:
             button.height = self.height
 
 
+@dataclass
+class PygameValues:
+    """A dataclass that collects all of the values surrounding pygame"""
+    screen: pygame.display
+    width: int
+    height: int
+    button_rows: list[ButtonRow]
+    font: pygame.font
+    current_size: int
+    target_size: int
+
+
 if __name__ == '__main__':
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
@@ -229,9 +241,8 @@ if __name__ == '__main__':
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ['python_ta.contracts'],
-        'allowed-io': ['run_example_break'],
-        # HERE. All functions that use I/O must be stated here. For example, if do_this() has print in, then add 'do_this()' to allowed-io.
+        'extra-imports': ['python_ta.contracts', 'pygame', 'pull_tweets_classes'],
+        'allowed-io': [],
         'max-line-length': 100,
         'disable': ['R1705', 'C0200']
     })

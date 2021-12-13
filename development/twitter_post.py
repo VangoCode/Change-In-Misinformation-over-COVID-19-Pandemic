@@ -22,33 +22,30 @@ class ServerManager:
     - headers: the headers for the HTTPS request
     - url: the URL to be queried
     - response: the server response
+
+    Representation Invariants
+        - self.bearer_token != ''
+        - self.bearer_token is a valid token for the Twitter API
+        - self.url != ''
+        - self.url is a valid URL to ping the twitter API
+        - self.response != ''
     """
     bearer_token: str
     headers: dict
+    url: str
+    response: str
 
     def __init__(self) -> None:
         """Initializes the ServerManager class"""
         self.bearer_token = input('input your bearer token')  # get the bearer token
-        self.headers = self._create_https_header(self.bearer_token)  # create headers
-        self.url = None
-        self.response = None
+        self.headers = {"Authorization": "Bearer {}".format(self.bearer_token)}  # create headers
+        self.url = ''
+        self.response = ''
 
     def build_server_request(self, param: str) -> None:
         """Builds the serve request for the Twitter API."""
-        self.url = self._create_url(param)  # get the URL
+        self.url = f'https://api.twitter.com/1.1/statuses/show/{param}.json'  # get the URL
         self.response = self._get_response()  # get the response
-
-    def _create_url(self, param: str) -> str:
-        """Returns the URL to be queried"""
-        # generate the URL
-        url = f'https://api.twitter.com/1.1/statuses/show/{param}.json'
-        return url
-
-    def _create_https_header(self, bearer_token: str) -> dict:
-        """Returns a dict of the HTTPS headers for the request made above"""
-        # generate the HTTPS header
-        headers = {"Authorization": "Bearer {}".format(bearer_token)}
-        return headers
 
     def _get_response(self) -> str:
         """Returns the server response in JSON format"""
@@ -67,10 +64,11 @@ class ClientManager:
     Instance Attributes:
     - param: the ID of the tweet
     """
+    param: int
 
     def __init__(self) -> None:
         """Initialize the ClientManager class"""
-        self.param = ''
+        self.param = 0
 
     def get_query(self, param: str) -> None:
         """Gets the user's query"""
@@ -78,7 +76,7 @@ class ClientManager:
 
     def call_server(self, other: ServerManager) -> None:
         """Builds the server request"""
-        other.build_server_request(self.param)
+        other.build_server_request(str(self.param))
 
 
 if __name__ == '__main__':
@@ -90,9 +88,8 @@ if __name__ == '__main__':
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ['python_ta.contracts'],
-        'allowed-io': ['run_example_break'],
-        # HERE. All functions that use I/O must be stated here. For example, if do_this() has print in, then add 'do_this()' to allowed-io.
+        'extra-imports': ['python_ta.contracts', 'requests'],
+        'allowed-io': ['__init__'],
         'max-line-length': 100,
         'disable': ['R1705', 'C0200']
     })
