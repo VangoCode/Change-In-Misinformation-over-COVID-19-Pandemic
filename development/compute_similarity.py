@@ -15,7 +15,7 @@ import similarity
 from pull_tweets_classes import generate_month_year_list
 
 
-def compute_misinformation_count_for_month(month: str, year: str) -> (int, int):
+def compute_misinformation_month(month: str, year: str) -> (int, int):
     """Returns the number of misinformation detected for the month inputted as well as the rate"""
     filename = './data/' + str.capitalize(month) + year
 
@@ -60,13 +60,13 @@ def get_myths_for_every_month() -> [list[int], list[int]]:
     print('--------\nGENERATING MISINFORMATION COUNTS\n--------')
 
     for item in month_year_list:
-        count = compute_misinformation_count_for_month(item.month,
-                                                       item.year)
+        count = compute_misinformation_month(item.month,
+                                             item.year)
         misinformation_count_list.append(count[0])
         misinformation_rate_list.append(count[1])
         print('Generated misinformation count for ' + item.month + ' ' + item.year + ": ")
-        print('Hard Values: ' + str(misinformation_count_list[-1]) + '\tPercent Values: ' +
-              str(misinformation_rate_list[-1]) + '\n--------')
+        print('Hard Values: ' + str(misinformation_count_list[-1]) + '\nPercent Values: '
+              + str(misinformation_rate_list[-1]) + '\n--------')
 
     return [misinformation_count_list, misinformation_rate_list]
 
@@ -78,11 +78,15 @@ def output_myths_count_into_file(filename: str) -> None:
 
     with open(filename + '_hard-values', mode='w', encoding='utf-8') as f:
         for i in range(len(month_year_list)):
-            f.write(month_year_list[i].month + month_year_list[i].year + ': ' + str(generated_myths_count[0][i]) + '\n')
+            f.write(month_year_list[i].month + month_year_list[i].year + ': '
+                    + str(generated_myths_count[0][i]) + '\n')
 
     with open(filename + '_percent-values', mode='w', encoding='utf-8') as f2:
-        for i in range(len(month_year_list)):
-            f2.write(month_year_list[i].month + month_year_list[i].year + ': ' + str(generated_myths_count[1][i]) + '\n')
+        c = 0
+        for item in month_year_list:
+            f2.write(item.month + item.year
+                     + ': ' + str(generated_myths_count[1][c]) + '\n')
+            c += 1
 
 
 if __name__ == '__main__':
@@ -94,9 +98,9 @@ if __name__ == '__main__':
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ['python_ta.contracts'],
-        'allowed-io': ['run_example_break'],
-        # HERE. All functions that use I/O must be stated here. For example, if do_this() has print in, then add 'do_this()' to allowed-io.
+        'extra-imports': ['python_ta.contracts', 'similarity', 'pull_tweets_classes'],
+        'allowed-io': ['compute_misinformation_month', 'get_myths',
+                       'get_myths_for_every_month', 'output_myths_count_into_file'],
         'max-line-length': 100,
         'disable': ['R1705', 'C0200']
     })

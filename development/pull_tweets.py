@@ -47,7 +47,7 @@ def pull_direct_tweets() -> None:
     """Pulls the direct Twitter ID's for 900 tweets (rate limit)"""
     # cannot use with for this because we pass f as a parameter into a helper function
     #   keep in mind, we close it at the end.
-    f = open('./data/filtered_twitter_ids_random_20', 'w', encoding='utf-8')
+    f = open('./data/filtered_twitter_ids_random', 'w', encoding='utf-8')
 
     with open('./data/twitter_ids') as data:
         next(data)  # skip first line
