@@ -41,12 +41,16 @@ def check_similarity_score(phrase: str, sample: str) -> bool:
         - phrase != ''
         - sample != ''
 
+    # second doctest is courtesy of https://twitter.com/nickiminaj, misinformation
+    #   Nicki Minaj tweeted out (still a big fan though)
+
     >>> check_similarity_score("fuzzy was a bear", "fuzzy fuzzy was a bear")
     True
-    >>> check_similarity_score("My cousin in Trinidad won’t get the vaccine cuz his friend got it & became impotent." \
-                                "His testicles became swollen. His friend was weeks away from getting married, now" \
-                                 "the girl called off the wedding. So just pray on it & make sure you’re comfortable" \
-                                  "with ur decision, not bullied", "vaccine swollen testicles")
+    >>> check_similarity_score("My cousin in Trinidad won’t get the vaccine cuz his friend got" \
+                                "it & became impotent. His testicles became swollen. His friend" \
+                                "was weeks away from getting married, now the girl called off" \
+                                "the wedding. So just pray on it & make sure you’re comfortable" \
+                                "with ur decision, not bullied", "vaccine swollen testicles")
     True
     >>> check_similarity_score("The vaccine booster shot does not protect against the new omicron variant.", \
         "vaccine lowers risk of severe disease with COVID-19")
@@ -93,9 +97,8 @@ if __name__ == '__main__':
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ['python_ta.contracts'],
-        'allowed-io': ['run_example_break'],
-        # HERE. All functions that use I/O must be stated here. For example, if do_this() has print in, then add 'do_this()' to allowed-io.
+        'extra-imports': ['python_ta.contracts', 'fuzzywuzzy'],
+        'allowed-io': ['is_false_positive'],
         'max-line-length': 100,
         'disable': ['R1705', 'C0200']
     })

@@ -14,31 +14,30 @@ please consult our Course Syllabus.
 
 This file is Copyright (c) 2021 Ron Varshavsky and Elsie (Muhan) Zhu.
 """
-
-import twitter_post
+from typing import IO
 import csv
-from pull_tweets_classes import generate_month_year_list
+import twitter_post
+from pull_tweets_classes import generate_month_year_list, MonthYear
 
 
 def isolate_ids() -> None:
     """Isolates the ID's of the Twitter dataset. Writes the new ID's to a file."""
-    f = open("./data/twitter_ids", "w")
 
-    with open('data/COVID19_twitter_full_dataset.csv') as csvfile:
-        spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-        for row in spamreader:
-            id = list(row)[0].split(',')[0]
-            f.write(id + '\n')
-    f.close()
+    with open("./data/twitter_ids", "w") as f:
+        with open('data/COVID19_twitter_full_dataset.csv') as csvfile:
+            spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+            for row in spamreader:
+                row_id = list(row)[0].split(',')[0]
+                f.write(row_id + '\n')
 
 
-def check_post_valid(id: str, f):
-    """Returns if a twitter post exists by its id"""
+def check_post_valid(row_id: str, f: IO) -> None:
+    """Writes to file f if the twitter post exists by its id"""
     server = twitter_post.ServerManager()
     user = twitter_post.ClientManager()
 
     # call the getQuery() method
-    user.get_query(id)
+    user.get_query(row_id)
     # build the server response
     user.call_server(server)
 
@@ -48,6 +47,8 @@ def check_post_valid(id: str, f):
 
 def pull_direct_tweets() -> None:
     """Pulls the direct Twitter ID's for 900 tweets (rate limit)"""
+    # cannot use with for this because we pass f as a parameter into a helper function
+    #   keep in mind, we close it at the end.
     f = open('./data/filtered_twitter_ids_random_20', 'w', encoding='utf-8')
 
     with open('./data/twitter_ids') as data:
@@ -77,21 +78,36 @@ def sort_by_month() -> None:
     files_open = []
     for item in month_year_list:
         file = './data/' + item.month + item.year
+        # this is a list of open files, it would be tedious to use with open for all of these
         files_open.append(open(file, mode='w', encoding='utf-8'))
 
     with open('./data/filtered_twitter_ids_compiled', encoding='utf-8') as f:
         for line in f:
             stripped = line.strip().split(' ')
             for i in range(len(month_year_list)):
-                if month_year_list[i].month + month_year_list[i].year \
-                        == stripped[2] + stripped[6][:4]:
-                    index = 119  # the index where the text begins
-                    while line[index] != "'":
-                        index += 1
-                    files_open[i].write(line[118:index] + '\n')
+                isolate_text_write_to_file(month_year_list, files_open, stripped, i, line)
 
     for file in files_open:
         file.close()
+
+
+def isolate_text_write_to_file(month_year_list: list[MonthYear], files_open: list[IO],
+                               stripped: list[str], i: int, line: str) -> None:
+    """A helper function for sort_by_month() which isolates for the text of the line, and
+        writes it to the file
+
+    Representation Invariants:
+        - month_year_list == generate_month_year_list()
+        - files_open != []
+        - all files in files_open are open
+        - len(line) >= 119
+    """
+    if month_year_list[i].month + month_year_list[i].year \
+            == stripped[2] + stripped[6][:4]:
+        index = 119  # the index where the text begins
+        while line[index] != "'":
+            index += 1
+        files_open[i].write(line[118:index] + '\n')
 
 
 if __name__ == '__main__':
@@ -103,9 +119,8 @@ if __name__ == '__main__':
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ['python_ta.contracts'],
-        'allowed-io': ['run_example_break'],
-        # HERE. All functions that use I/O must be stated here. For example, if do_this() has print in, then add 'do_this()' to allowed-io.
+        'extra-imports': ['python_ta.contracts', 'twitter_post', 'csv', 'pull_tweets_classes'],
+        'allowed-io': ['isolate_ids', 'pull_direct_tweets', 'compile_into_file', 'sort_by_month'],
         'max-line-length': 100,
         'disable': ['R1705', 'C0200']
     })
