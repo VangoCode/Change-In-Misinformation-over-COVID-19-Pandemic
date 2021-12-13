@@ -1,5 +1,5 @@
 """
- Creates a row of buttons using the Pygame Library.
+Creates a row of buttons using the Pygame Library.
 
 Copyright and Usage Information
 ==================================================
