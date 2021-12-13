@@ -21,8 +21,8 @@ from pull_tweets_classes import generate_month_year_list, MonthYear
 def isolate_ids() -> None:
     """Isolates the ID's of the Twitter dataset. Writes the new ID's to a file."""
 
-    with open("./data/twitter_ids", "w") as f:
-        with open('data/COVID19_twitter_full_dataset.csv') as csvfile:
+    with open("./data/twitter_ids", mode="w", encoding='utf-8') as f:
+        with open('data/COVID19_twitter_full_dataset.csv', encoding='utf-8') as csvfile:
             spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
             for row in spamreader:
                 row_id = list(row)[0].split(',')[0]
@@ -49,7 +49,7 @@ def pull_direct_tweets() -> None:
     #   keep in mind, we close it at the end.
     f = open('./data/filtered_twitter_ids_random', 'w', encoding='utf-8')
 
-    with open('./data/twitter_ids') as data:
+    with open('./data/twitter_ids', encoding='utf-8') as data:
         next(data)  # skip first line
 
         for line in data:

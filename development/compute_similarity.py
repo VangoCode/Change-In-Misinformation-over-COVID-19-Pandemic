@@ -37,11 +37,11 @@ def get_myths() -> set[str]:
     # ACCUMULATOR
     myths = set()
 
-    with open('./myths/extracted_myths.txt') as f:
+    with open('./myths/extracted_myths.txt', encoding='utf-8') as f:
         for line in f:
             myths.add(line.strip().lower())
 
-    with open('./myths/extra_added_myths.txt') as f:
+    with open('./myths/extra_added_myths.txt', encoding='utf-8') as f:
         for line in f:
             myths.add(line.strip().lower())
 

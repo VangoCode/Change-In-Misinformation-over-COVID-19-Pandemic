@@ -73,7 +73,7 @@ def is_false_positive(phrase: str) -> bool:
     >>> is_false_positive('5G waves DO spread COVID-19')
     False
     """
-    with open('texts/negation_words.txt') as f:
+    with open('texts/negation_words.txt', encoding='utf-8') as f:
         negation_words = f.read().splitlines()  # if you do f.readlines(), will be \n at the end
 
     sentences = phrase.split('.')  # split the phrase into sentences
