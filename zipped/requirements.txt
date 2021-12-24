@@ -1,0 +1,17 @@
+# CSC110Y1F: Requirements for Twitter Misinformation
+# Muhan (Elsie) Zhu, Ron Varshavsky
+
+# Data Gathering
+requests
+scrapy
+
+# Dataclass
+dataclassess
+typing
+pyta
+
+# Data Processing
+fuzzywuzzy
+
+# Data Visualization
+pygame

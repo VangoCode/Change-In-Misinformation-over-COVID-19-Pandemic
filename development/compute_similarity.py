@@ -76,12 +76,12 @@ def output_myths_count_into_file(filename: str) -> None:
     generated_myths_count = get_myths_for_every_month()
     month_year_list = generate_month_year_list()
 
-    with open(filename + '_hard-values', mode='w', encoding='utf-8') as f:
+    with open('./data/' + filename + '_hard-values', mode='w', encoding='utf-8') as f:
         for i in range(len(month_year_list)):
             f.write(month_year_list[i].month + month_year_list[i].year + ': '
                     + str(generated_myths_count[0][i]) + '\n')
 
-    with open(filename + '_percent-values', mode='w', encoding='utf-8') as f2:
+    with open('./data/' + filename + '_percent-values', mode='w', encoding='utf-8') as f2:
         c = 0
         for item in month_year_list:
             f2.write(item.month + item.year
