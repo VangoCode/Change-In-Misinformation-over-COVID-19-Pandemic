@@ -75,7 +75,7 @@ def visualize() -> None:
     button_rows = [ButtonRow(0, 50), ButtonRow(50, 50),
                    ButtonRow(2 * 50, 50)]
 
-    with open('./data/outputted_myths.txt_percent-values', mode='r', encoding='utf-8') as file:
+    with open('outputted_myths.txt_percent-values', mode='r', encoding='utf-8') as file:
         # ACCUMULATOR
         data = []
 
@@ -87,7 +87,7 @@ def visualize() -> None:
             button_rows[i].add_button()
 
     pygame.display.set_caption('Twitter Misinformation Visualizer')
-    font = pygame.font.SysFont('Arial', 26)
+    font = pygame.font.SysFont('Arial', 28)
     month_year_list = generate_month_year_list()
     current_size = 0
     current_misinformation = 0.0
